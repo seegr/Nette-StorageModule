@@ -1,0 +1,57 @@
+{block title}{ifset $folder}{$folder->title}{else}Složka{/ifset}<span class="opacity-5"> | Uložiště</span>{/block}
+
+{block content}
+  {include backButton, "Výpis složek", "foldersList"}
+
+  <fieldset>
+    <legend>Nastavení</legend>
+    <form n:name="folderForm" autocomplete="off">
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            {label title}
+            {input title}
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            {label password}
+            <div class="input-group">
+              <div class="btn btn-primary" id="pass-toggle"><i class="fad fa-eye"></i></div>
+              {input password, class => "key"}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        {label text}
+        {input text, data-tiny => "advanced"}
+      </div>
+      {include formButtons}
+    </form>
+    <a n:ifset="$folder" n:href="deleteFolder!, $folder->hash, true" class="btn btn-outline-danger ajax" data-confirm="Smazat složku i se všemi soubory?">Smazat složku</a>
+  </fieldset>
+
+  <fieldset n:ifset="$folder" n:snippet="files" class="mt-4">
+    <legend>Soubory</legend>
+    <button data-toggle="collapse" data-target=".dropzone-wrap" class="btn btn-outline-primary">Nahrávadlo :)</button>
+    <div class="dropzone-wrap collapse">
+      {control folderFilesDropzone}
+    </div>
+    <div class="files mt-3">
+      {control folderFilesList}
+    </div>
+  </fieldset>
+{/block}
+
+{block scripts}
+  {include parent}
+  <script type="text/javascript">
+    $(function() {
+      $("#pass-toggle").click(function() {
+        $in = $(this).parents(".input-group").find("#frm-folderForm-password").toggleClass("key");
+        console.log($in);
+      });
+    });
+  </script>
+{/block}

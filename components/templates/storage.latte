@@ -1,0 +1,34 @@
+<div id="{$id}" class="files-list">
+  {snippet files}
+    {if $folder->password}
+      <form n:name="passwordForm" autocomplete="off">
+        <div class="form-group">
+          {label password, data-toggle => "tooltip", title => "Některé soubory jsou skryté, pro jejich zpřístupnění použij heslo"}
+          <div class="input-group">
+            {input password, class => "form-control key"}
+            <div class="input-group-append">
+              {input submit, class => "btn btn-outline-success ajax"}
+            </div>
+          </div>
+        </div>
+      </form>
+    {/if}
+    <table class="table">
+      <tr n:foreach="$files as $file" class="file">
+        {if !$folder->password || (!$file->hidden) || $file->hidden && $allow}
+          <td>
+            <i n:if="$file->hidden" class="fad fa-lock"></i>
+          </td>
+          <td>
+            {$file->title}
+          </td>
+          <td>
+            <a n:href="downloadFile!, $file->ref(file)->key">
+              <i class="fad fa-download"></i>
+            </a>
+          </td>
+        {/if}
+      </tr>
+    </table>
+  {/snippet}
+</div>
